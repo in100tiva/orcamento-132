@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Proposta Comercial - Mobile</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #1e40af; font-weight: 600; }
+        .tab-inactive { color: #64748b; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 pb-20">
+
+    <!-- Header Mobile -->
+    <header class="bg-white p-5 border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-slate-900 leading-tight">Proposta Comercial</h1>
+                <p class="text-xs text-slate-500 mt-1">Evolução de Plataforma</p>
+            </div>
+            <div class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide border border-green-200">
+                Condição Especial
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="p-4 space-y-5">
+
+        <!-- KPI Cards (Resumo) -->
+        <section id="kpi-section" class="grid grid-cols-2 gap-3">
+            <!-- Card Custo -->
+            <div class="bg-white p-4 rounded-xl border-l-4 border-blue-500 card-shadow col-span-2">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-semibold text-slate-400 uppercase">Investimento Total</span>
+                    <i data-lucide="dollar-sign" class="w-4 h-4 text-blue-500"></i>
+                </div>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-2xl font-bold text-slate-900">R$ 19,8k</span>
+                    <span class="text-sm text-slate-400 font-normal">a</span>
+                    <span class="text-lg font-bold text-slate-600">55,8k</span>
+                </div>
+                <p class="text-[10px] text-slate-500 mt-1">Valores com 50% de desconto aplicado.</p>
+            </div>
+
+            <!-- Card Horas -->
+            <div class="bg-white p-3 rounded-xl border-l-4 border-emerald-500 card-shadow">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase">Esforço (h)</span>
+                    <i data-lucide="clock" class="w-3 h-3 text-emerald-500"></i>
+                </div>
+                <div class="text-lg font-bold text-slate-900">220h - 373h</div>
+            </div>
+
+            <!-- Card Taxa -->
+            <div class="bg-white p-3 rounded-xl border-l-4 border-purple-500 card-shadow">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase">Valor/Hora</span>
+                    <i data-lucide="check-circle" class="w-3 h-3 text-purple-500"></i>
+                </div>
+                <div class="text-lg font-bold text-slate-900">R$ 90 - 150</div>
+            </div>
+        </section>
+
+        <!-- Dynamic Content Area -->
+        <div id="content-area">
+            
+            <!-- VIEW: GRÁFICOS -->
+            <div id="view-charts" class="space-y-5 animate-fade-in">
+                
+                <!-- Gráfico de Barras -->
+                <div class="bg-white p-4 rounded-xl card-shadow">
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                        <i data-lucide="bar-chart-2" class="w-4 h-4 mr-2 text-slate-400"></i>
+                        Comparativo de Custo (Min/Max)
+                    </h3>
+                    <div class="relative h-60 w-full">
+                        <canvas id="costChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico de Pizza -->
+                <div class="bg-white p-4 rounded-xl card-shadow">
+                    <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center">
+                        <i data-lucide="pie-chart" class="w-4 h-4 mr-2 text-slate-400"></i>
+                        Distribuição de Esforço
+                    </h3>
+                    <div class="relative h-60 w-full flex justify-center">
+                        <canvas id="effortChart"></canvas>
+                    </div>
+                    <p class="text-center text-xs text-slate-400 mt-4">O Backend consome a maior parte do esforço devido à segurança.</p>
+                </div>
+            </div>
+
+            <!-- VIEW: DETALHES (Hidden by default) -->
+            <div id="view-details" class="space-y-4 hidden">
+                
+                <!-- Fase 0 -->
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-blue-50/50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-slate-900">Fase 0: Migração</h3>
+                                <p class="text-xs text-slate-500 mt-1">Arquitetura & Setup</p>
+                            </div>
+                            <span class="bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Prioritário</span>
+                        </div>
+                        <div class="mt-3 flex gap-4 text-sm">
+                            <div><span class="text-slate-400 text-xs block">Custo</span> <strong>R$ 2,2k - 5,6k</strong></div>
+                            <div><span class="text-slate-400 text-xs block">Horas</span> <strong>25h - 38h</strong></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white">
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><i data-lucide="database" class="w-4 h-4 mr-2 mt-0.5 text-blue-400"></i> Schema Supabase & GitHub Setup</li>
+                            <li class="flex items-start"><i data-lucide="shield" class="w-4 h-4 mr-2 mt-0.5 text-blue-400"></i> Conformidade inicial LGPD</li>
+                            <li class="flex items-start"><i data-lucide="arrow-right-circle" class="w-4 h-4 mr-2 mt-0.5 text-blue-400"></i> Exportação Lovable</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Comp X -->
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-emerald-50/50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-slate-900">Backend Core</h3>
+                                <p class="text-xs text-slate-500 mt-1">Lógica de Negócio & Segurança</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded">Core</span>
+                        </div>
+                        <div class="mt-3 flex gap-4 text-sm">
+                            <div><span class="text-slate-400 text-xs block">Custo</span> <strong>R$ 10,8k - 31,5k</strong></div>
+                            <div><span class="text-slate-400 text-xs block">Horas</span> <strong>120h - 210h</strong></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white">
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><i data-lucide="server" class="w-4 h-4 mr-2 mt-0.5 text-emerald-500"></i> APIs REST/GraphQL</li>
+                            <li class="flex items-start"><i data-lucide="lock" class="w-4 h-4 mr-2 mt-0.5 text-emerald-500"></i> Controle de Acesso (RBAC)</li>
+                            <li class="flex items-start"><i data-lucide="check-square" class="w-4 h-4 mr-2 mt-0.5 text-emerald-500"></i> Testes Automatizados (QA)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Comp Y -->
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="p-4 border-b border-slate-100 bg-pink-50/50">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-bold text-slate-900">App Motorista</h3>
+                                <p class="text-xs text-slate-500 mt-1">Interface PWA Mobile</p>
+                            </div>
+                            <span class="bg-pink-100 text-pink-700 text-[10px] font-bold px-2 py-0.5 rounded">Visual</span>
+                        </div>
+                        <div class="mt-3 flex gap-4 text-sm">
+                            <div><span class="text-slate-400 text-xs block">Custo</span> <strong>R$ 6,7k - 18,7k</strong></div>
+                            <div><span class="text-slate-400 text-xs block">Horas</span> <strong>75h - 125h</strong></div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white">
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li class="flex items-start"><i data-lucide="smartphone" class="w-4 h-4 mr-2 mt-0.5 text-pink-400"></i> App Web Progressivo (PWA)</li>
+                            <li class="flex items-start"><i data-lucide="truck" class="w-4 h-4 mr-2 mt-0.5 text-pink-400"></i> Fluxo de Pesagem e Tickets</li>
+                            <li class="flex items-start"><i data-lucide="file-text" class="w-4 h-4 mr-2 mt-0.5 text-pink-400"></i> Visualização de NFs</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- VIEW: RISCOS (Hidden by default) -->
+            <div id="view-risks" class="space-y-4 hidden">
+                
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <h4 class="text-amber-900 font-bold text-sm mb-2 flex items-center">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i>
+                        Propriedade Intelectual (PI)
+                    </h4>
+                    <p class="text-sm text-amber-800 leading-relaxed mb-3">
+                        Plataformas Low-Code como Lovable podem reter direitos sobre os dados para treinamento de IA.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-lg text-xs text-amber-900 font-medium">
+                        Recomendação: Migrar core crítico para código proprietário (previsto neste orçamento) garante posse total.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-4">
+                    <h4 class="text-slate-800 font-bold text-sm mb-3 flex items-center">
+                        <i data-lucide="repeat" class="w-4 h-4 mr-2 text-green-600"></i>
+                        Custos Recorrentes (OPEX)
+                    </h4>
+                    <table class="w-full text-sm">
+                        <tr class="border-b border-slate-100">
+                            <td class="py-2 text-slate-500">Infra Cloud</td>
+                            <td class="py-2 text-right font-medium">US$ 150 - 1k/mês</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-slate-500">Manutenção</td>
+                            <td class="py-2 text-right font-medium">R$ 10k - 50k/ano</td>
+                        </tr>
+                    </table>
+                    <p class="text-[10px] text-slate-400 mt-2 text-center">*Valores dependem do volume de uso.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation (App-like) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] safe-area-bottom z-50">
+        <div class="flex justify-around items-center h-16">
+            <button onclick="switchTab('charts')" class="nav-btn w-full h-full flex flex-col items-center justify-center space-y-1 tab-active" id="btn-charts">
+                <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+                <span class="text-[10px]">Visão Geral</span>
+            </button>
+            <button onclick="switchTab('details')" class="nav-btn w-full h-full flex flex-col items-center justify-center space-y-1 tab-inactive" id="btn-details">
+                <i data-lucide="list" class="w-5 h-5"></i>
+                <span class="text-[10px]">Fases</span>
+            </button>
+            <button onclick="switchTab('risks')" class="nav-btn w-full h-full flex flex-col items-center justify-center space-y-1 tab-inactive" id="btn-risks">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                <span class="text-[10px]">Riscos</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Inicializa ícones
+        lucide.createIcons();
+
+        // Dados
+        const phases = [
+            { name: 'Fase 0', minCost: 2250, maxCost: 5625, minHours: 25, maxHours: 38 },
+            { name: 'Backend', minCost: 10800, maxCost: 31500, minHours: 120, maxHours: 210 },
+            { name: 'App PWA', minCost: 6750, maxCost: 18750, minHours: 75, maxHours: 125 }
+        ];
+
+        // Configuração dos Gráficos
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Gráfico de Barras (Custos)
+            const ctxCost = document.getElementById('costChart').getContext('2d');
+            new Chart(ctxCost, {
+                type: 'bar',
+                data: {
+                    labels: phases.map(p => p.name),
+                    datasets: [
+                        {
+                            label: 'Mínimo',
+                            data: phases.map(p => p.minCost),
+                            backgroundColor: '#94a3b8',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Máximo',
+                            data: phases.map(p => p.maxCost),
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + context.raw.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { display: false, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Gráfico de Pizza (Esforço)
+            const ctxEffort = document.getElementById('effortChart').getContext('2d');
+            new Chart(ctxEffort, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Fase 0', 'Backend', 'App PWA'],
+                    datasets: [{
+                        data: [31.5, 165, 100], // Médias aproximadas
+                        backgroundColor: ['#60a5fa', '#34d399', '#f472b6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
+                    }
+                }
+            });
+        });
+
+        // Lógica de Abas
+        function switchTab(tabName) {
+            // Esconde todas as views
+            document.getElementById('view-charts').classList.add('hidden');
+            document.getElementById('view-details').classList.add('hidden');
+            document.getElementById('view-risks').classList.add('hidden');
+
+            // Mostra a selecionada
+            document.getElementById('view-' + tabName).classList.remove('hidden');
+
+            // Atualiza botões
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('tab-active', 'text-blue-600');
+                btn.classList.add('tab-inactive', 'text-slate-400');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabName);
+            activeBtn.classList.remove('tab-inactive', 'text-slate-400');
+            activeBtn.classList.add('tab-active', 'text-blue-600');
+        }
+    </script>
+</body>
+</html>
